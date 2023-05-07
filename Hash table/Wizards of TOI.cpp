@@ -1,0 +1,51 @@
+#include<bits/stdc++.h>
+using namespace std;
+
+int const N=1500+10;
+int const sz=5e6+11;
+int sum[2][sz],hashtable[sz],x[4][N],y[4][N];
+
+int main(){
+    std::ios_base::sync_with_stdio(false);
+    std::cin.tie(NULL);
+    int xtt,ytt,n;
+    cin >> xtt >> ytt >> n;
+    for(int i=0;i<4;i++){
+        for(int j=0;j<n;j++){
+            cin >> x[i][j] >> y[i][j];
+        }
+    }
+    for(int i=0;i<n;i++){
+        for(int j=0;j<n;j++){
+            int xnow=x[0][i]+x[1][j];
+            int ynow=y[0][i]+y[1][j];
+            long long idx=(((xnow+3*ynow)%sz)+sz)%sz;
+            while(hashtable[idx]){
+                idx++;
+                idx%=sz;
+            }
+            hashtable[idx]=(1500*i)+j+1;
+            sum[0][idx]=xnow;
+            sum[1][idx]=ynow;
+        }
+    }
+    for(int i=0;i<n;i++){
+        for(int j=0;j<n;j++){
+            int xnow=xtt-(x[2][i]+x[3][j]);
+            int ynow=ytt-(y[2][i]+y[3][j]);
+            long long idx=(((xnow+3*ynow)%sz)+sz)%sz;
+            while(hashtable[idx]){
+                if(sum[0][idx]==xnow && sum[1][idx]==ynow){
+                    int k=hashtable[idx]-1;
+                    cout << x[0][k/1500] << " " << y[0][k/1500] << endl;
+                    cout << x[1][k%1500] << " " << y[1][k%1500] << endl;
+                    cout << x[2][i] << " " << y[2][i] << endl;
+                    cout << x[3][j] << " " << y[3][j] << endl;
+                    return 0;
+                }
+                idx++;
+                idx%=sz;
+            }
+        }
+    }
+}
